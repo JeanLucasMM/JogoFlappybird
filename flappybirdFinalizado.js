@@ -54,19 +54,15 @@ let verificarMetaClicado = false; // Nova variável para controlar se o botão d
 
 
 
-// Agora, carregue a imagem da moeda no evento onload
 imagemMoeda = new Image();
-imagemMoeda.src = "assets/moeda.jpg"; // Substitua "assets/moeda.png" pelo caminho real da sua imagem de moeda
+imagemMoeda.src = "assets/moeda.jpg"; 
 imagemMoeda.onload = function () {
-    // Inicia o loop de atualização do jogo usando requestAnimationFrame
     requestAnimationFrame(atualizar);
 
-    // Gera novas moedas a cada 2 segundos usando setInterval
     setInterval(gerarMoedas, 2000);
 };
 
 function gerarMoedas() {
-    // Verifica se o jogo está encerrado antes de gerar novas moedas
     if (jogoEncerrado || !imagemMoeda.complete) {
         return;
     }
@@ -77,11 +73,11 @@ function gerarMoedas() {
 
     // Cria um objeto representando a moeda
     let moeda = {
-        imagem: imagemMoeda, // Imagem da moeda
-        x: posicaoXMoeda, // Posição inicial da moeda no eixo X
-        y: posicaoYMoeda, // Posição inicial da moeda no eixo Y
-        largura: larguraMoeda, // Largura da moeda
-        altura: alturaMoeda // Altura da moeda
+        imagem: imagemMoeda, 
+        x: posicaoXMoeda, 
+        y: posicaoYMoeda, 
+        largura: larguraMoeda,
+        altura: alturaMoeda 
     };
 
     // Adiciona a moeda ao array de moedas
@@ -92,19 +88,14 @@ function desenharMoedas() {
     for (let i = 0; i < arrayMoedas.length; i++) {
         let moeda = arrayMoedas[i];
 
-        // Move a moeda para a esquerda com base na velocidadeX
         moeda.x += velocidadeX;
 
-        // Desenha a moeda no contexto do tabuleiro
         contexto.drawImage(moeda.imagem, moeda.x, moeda.y, moeda.largura, moeda.altura);
 
-        // Verifica se há colisão entre o pássaro e a moeda
         if (detectarColisao(passaro, moeda)) {
-            // Remove a moeda do array ao colidir com o pássaro
             arrayMoedas.splice(i, 1);
             
-            // Adiciona pontuação ou moedas ao jogador, conforme necessário
-            totalMoedas += 10; // ou adicione o valor desejado
+            totalMoedas += 10; 
         }
     }
 }
@@ -128,21 +119,16 @@ function renderizarContagemMoedas() {
 
 
 
-// Aguarda até que a página HTML seja totalmente carregada antes de executar o código
 window.onload = function () {
-    // Obtém a referência do elemento do tabuleiro no HTML usando o ID "tabuleiro"
     tabuleiro = document.getElementById("tabuleiro");
 
-    // Define a altura e largura do tabuleiro com base nas variáveis predefinidas
     tabuleiro.height = alturaTabuleiro;
     tabuleiro.width = larguraTabuleiro;
 
-    // Obtém o contexto de desenho 2D do tabuleiro
-    contexto = tabuleiro.getContext("2d"); // Usado para desenhar no tabuleiro
+    contexto = tabuleiro.getContext("2d"); 
 
-    // Desenha a imagem do pássaro no tabuleiro quando ela é carregada
-    imagemPassaro = new Image(); //Construtor padrão para criar objetos de imagem
-    imagemPassaro.src = "assets/flappybird.png"; //Define o PNG da imagem
+    imagemPassaro = new Image(); 
+    imagemPassaro.src = "assets/flappybird.png"; 
     imagemPassaro.onload = function () {
         contexto.drawImage(imagemPassaro, passaro.x, passaro.y, passaro.largura, passaro.altura);
     }
@@ -152,21 +138,16 @@ window.onload = function () {
         btnReiniciar.addEventListener("click", reiniciarJogo);
     }
 
-    // Carrega a imagem do cano superior
     imagemCanoSuperior = new Image();
     imagemCanoSuperior.src = "assets/cano-alto.png";
 
-    // Carrega a imagem do cano inferior
     imagemCanoInferior = new Image();
     imagemCanoInferior.src = "assets/cano-baixo.png";
 
-    // Inicia o loop de atualização do jogo usando requestAnimationFrame
     requestAnimationFrame(atualizar);
 
-    // Gera novos canos a cada 1.5 segundos usando setInterval
     setInterval(gerarCanos, 1500);
 
-    // Adiciona um ouvinte de evento para responder às teclas pressionadas
     document.addEventListener("keydown", moverPassaro);
 
     carregarMoedas();
@@ -174,9 +155,7 @@ window.onload = function () {
 }
 
 function moverPassaro(evento) {
-    // Verifica se a tecla pressionada é a barra de espaço, seta para cima ou tecla X
     if (evento.code == "Space" || evento.code == "ArrowUp" || evento.code == "KeyX") {
-        // Ajusta a velocidade vertical para simular um salto
         velocidadeY = -5;
 
     }
@@ -205,7 +184,7 @@ function verificarMeta() {
 
 
 
-let quantidadeDinheiroInserido = 0; // Adicione esta variável para rastrear a quantidade de dinheiro inserido
+let quantidadeDinheiroInserido = 0; 
 function reiniciarJogo() {
     // Reinicia variáveis do jogo
     document.getElementById("btnReiniciar").style.display = "none";
@@ -217,73 +196,58 @@ function reiniciarJogo() {
     ajustarDificuldade();
     verificarMetaClicado = false;
 
-    // Reinicia a posição do pássaro
     passaro.x = posicaoXPassaro;
     passaro.y = posicaoYPassaro;
 
-    // Limpa o array de canos
     arrayCanos = [];
 
-    // Esconde a tela de game over
     document.getElementById("telaGameOver").style.display = "none";
 
-    // Reinicia o loop de atualização do jogo usando requestAnimationFrame
     requestAnimationFrame(atualizar);
-    // Atualiza a contagem total de moedas
     totalMoedasGlobal += totalMoedas;
 
-    // Salva as moedas antes de reiniciar o jogo
     salvarMoedas();
 
-    // Atualiza a contagem de moedas
     renderizarContagemMoedas();
     document.getElementById("btnReiniciar").addEventListener("click", reiniciarJogo);
 
     jogoIniciado = false;
 }
 function ajustarDificuldade() {
-    // Ajusta a velocidade com base na quantidade de dinheiro inserido
     if (quantidadeDinheiroInserido > 30) {
-        velocidadeX = -2.5; // ou ajuste conforme necessário
+        velocidadeX = -2.5; 
     } else {
-        velocidadeX = -1.5; // ou ajuste conforme necessário
+        velocidadeX = -1.5; 
     }
 
-    // Ajusta o atraso do pulo/voo com base na quantidade de dinheiro inserido
     if (quantidadeDinheiroInserido > 60) {
-        // Adicione um delay maior para tornar o jogo mais difícil
-        // Exemplo: aumenta a velocidade vertical do pássaro (atraso no pulo)
-        velocidadeY = -4.5; // ou ajuste conforme necessário
+        velocidadeY = -4.5; 
     } else {
-        velocidadeY = -5; // Valor padrão
+        velocidadeY = -5; 
     }
 }
 let metaPontuacao = 10;
 
 function fazerAposta() {
-    // Verifica se o jogo já foi iniciado
     if (jogoIniciado) {
         alert("O jogo já foi iniciado. Você não pode fazer uma nova aposta.");
         return;
     }
 
-    // Obtém a aposta do usuário através de um prompt ou algum outro meio de entrada
     let novaAposta = prompt("Duvido você chegar a " + metaPontuacao + " de pontuação. Quer apostar? Digite a quantidade de moedas que deseja apostar:");
 
-    // Valida se a entrada é um número e se o jogador tem moedas suficientes para apostar
     if (!isNaN(novaAposta) && novaAposta <= totalMoedas) {
         aposta = parseInt(novaAposta);
-        totalMoedas -= aposta; // Deduz a aposta do total de moedas do jogador
-        renderizarContagemMoedas(); // Atualiza a exibição da contagem de moedas
-        ajustarDificuldade(); // Ajusta a dificuldade com base na nova aposta
-        jogoIniciado = true; // Marca que o jogo foi iniciado
+        totalMoedas -= aposta; 
+        renderizarContagemMoedas(); 
+        ajustarDificuldade(); 
+        jogoIniciado = true; 
         alert("Agora inicie o jogo para validar sua aposta.");
     } else {
         alert("Aposta inválida. Certifique-se de digitar um número e ter moedas suficientes.");
     }
 }
 
-// Adicione uma função para atualizar a quantidade de dinheiro inserido
 function atualizarQuantidadeDinheiro(valor) {
     quantidadeDinheiroInserido += valor;
 }
@@ -291,7 +255,6 @@ function atualizarQuantidadeDinheiro(valor) {
 
 
 function atualizar() {
-    // Solicita ao navegador que chame novamente a função atualizar na próxima renderização
     requestAnimationFrame(atualizar);
     if (jogoEncerrado) {
         contexto.fillStyle = "white";
@@ -300,13 +263,10 @@ function atualizar() {
         contexto.fillText("Pontuação: " + pontuacao, 100, alturaTabuleiro / 2 + 20);
         renderizarContagemMoedas();
         
-        // Adicione o total de moedas ao totalMoedasGlobal
         totalMoedasGlobal += totalMoedas;
     
-        // Salva as moedas antes de reiniciar o jogo
         salvarMoedas();
     
-        // Mostra o botão de reinício
         document.getElementById("btnReiniciar").style.display = "block";
     
         return;
@@ -315,30 +275,21 @@ function atualizar() {
     
 
     
-    // Limpa a área do tabuleiro para desenhar a próxima moldura
     contexto.clearRect(0, 0, tabuleiro.width, tabuleiro.height);
     
-    // Pássaro
-    // Aumenta a velocidade vertical do pássaro aplicando a força da gravidade
     velocidadeY += gravidade;
     
-    // Atualiza a posição vertical do pássaro com base na velocidade
-    passaro.y = Math.max(passaro.y + velocidadeY, 0); // Aplica a gravidade à posição Y atual do pássaro, limitando a posição Y ao topo do canvas
+    passaro.y = Math.max(passaro.y + velocidadeY, 0); 
     
-    // Desenha a imagem do pássaro na nova posição
     contexto.drawImage(imagemPassaro, passaro.x, passaro.y, passaro.largura, passaro.altura);
     
-    // Itera sobre os canos presentes no arrayCanos
     for (let i = 0; i < arrayCanos.length; i++) {
         let cano = arrayCanos[i];
         
-        // Move o cano para a esquerda com base na velocidadeX
         cano.x += velocidadeX;
         
-        // Desenha o cano no contexto do tabuleiro
         contexto.drawImage(cano.imagem, cano.x, cano.y, cano.largura, cano.altura);
         
-        // Verifica se o pássaro passou pelo cano
         if (!cano.passou && passaro.x > cano.x + cano.largura) {
             pontuacao += 0.5; // Incrementa a pontuação por meio ponto
             cano.passou = true; // Marca que o pássaro já passou por esse cano
@@ -351,9 +302,8 @@ function atualizar() {
     }
     
     desenharMoedas();
-    // Limpa os canos que já passaram da tela
     while (arrayCanos.length > 0 && arrayCanos[0].x < -larguraCano) {
-        arrayCanos.shift(); // Remove o primeiro elemento do array de canos
+        arrayCanos.shift(); 
     }
 
     // Pontuação
@@ -364,7 +314,6 @@ function atualizar() {
 }
 
 function gerarCanos() {
-    // Verifica se o jogo está encerrado antes de gerar novos canos
     if (jogoEncerrado) {
         return;
     }
